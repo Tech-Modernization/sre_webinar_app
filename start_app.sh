@@ -3,7 +3,8 @@ set -e
 
 clone() {
   url="$1"
-  git clone "$1"
+  directory="${2:-.}"
+  git clone "$1" "$2"
 }
 
 clone_frontend() {
