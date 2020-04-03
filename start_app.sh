@@ -8,11 +8,15 @@ clone() {
 }
 
 clone_frontend() {
-  clone "https://github.com/Razz/Project_Organizer_FrontEnd ./frontend"
+  test -d ./frontend || clone https://github.com/Razz/Project_Organizer_FrontEnd ./frontend
 }
 
 clone_backend() {
-  clone "https://github.com/Razz/Project_Organizer_BackEnd ./backend"
+  test -d ./backend || clone https://github.com/Razz/Project_Organizer_BackEnd ./backend
+}
+
+initialize_backend() {
+  docker-compose run --rm backend-init
 }
 
 start_app() {
