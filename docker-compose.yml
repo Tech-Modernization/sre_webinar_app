@@ -1,0 +1,45 @@
+---
+version: '2.2'
+services:
+  frontend:
+    build:
+      context: frontend
+    environment:
+      HOST: 0.0.0.0
+      PORT: 5000
+    ports:
+      - 80:5000
+  backend:
+    build:
+      context: backend
+    environment:
+      RAILS_ENV: production
+      SECRET_KEY_BASE: supersecret
+      BINDING: 0.0.0.0
+      PORT: 3001
+      DATABASE_HOST: database
+      DATABASE_PORT: 5432
+      DATABASE_NAME: Project_Organizer_BackEnd_test
+      DATABASE_USERNAME: webapp
+      DATABASE_PASSWORD: webapp
+    ports:
+      - 3001:3001
+    volumes:
+      - $PWD/backend:/app
+    working_dir: /app
+  backend-init:
+    depends_on:
+      - database
+    extends: backend
+    entrypoint: rake
+    command:
+      - db:create
+      - db:migrate
+  database:
+    image: postgres:alpine
+    ports:
+      - 5432
+    environment:
+      POSTGRES_USER: webapp
+      POSTGRES_PASSWORD: webapp
+      POSTGRES_DB: Project_Organizer_BackEnd_test
