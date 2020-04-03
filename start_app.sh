@@ -20,7 +20,7 @@ initialize_backend() {
 }
 
 start_app() {
-  docker-compose up frontend backend
+  docker-compose up database frontend backend
 }
 
 for app in docker-compose git
@@ -34,4 +34,5 @@ done
 
 clone_frontend &&
   clone_backend &&
+  initialize_backend &&
   start_app
