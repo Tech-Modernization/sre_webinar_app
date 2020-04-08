@@ -43,3 +43,16 @@ services:
       POSTGRES_USER: webapp
       POSTGRES_PASSWORD: webapp
       POSTGRES_DB: Project_Organizer_BackEnd_test
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - $PWD/monitoring/prometheus:/etc/prometheus
+    ports:
+      - 9090
+  prometheus-frontend:
+    image: nginx:alpine
+    volumes:
+      - $PWD/monitoring/prometheus/nginx.conf:/etc/nginx/nginx.conf:ro
+      - $PWD/monitoring/certs:/certs
+    ports:
+      - 8081:8081

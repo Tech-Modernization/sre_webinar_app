@@ -19,8 +19,12 @@ initialize_backend() {
   docker-compose run --rm backend-init
 }
 
+start_monitoring() {
+  docker-compose up -d prometheus prometheus-frontend
+}
+
 start_app() {
-  docker-compose up database frontend backend
+  docker-compose up -d database frontend backend
 }
 
 for app in docker-compose git
@@ -35,4 +39,5 @@ done
 clone_frontend &&
   clone_backend &&
   initialize_backend &&
+  start_monitoring &&
   start_app

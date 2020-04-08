@@ -19,7 +19,7 @@ monitoring tool. I love using Prometheus and Grafana for this for a few reasons:
 
 # Cool! How do I run it?
 
-Start the web app with `scripts/start_web_server.sh`. Prom and Grafana will start up with it.
+Start the web app with `start_app.sh`. Prom and Grafana will start up with it.
 
 Prometheus will be on https://localhost:8080.
 
