@@ -17,6 +17,8 @@ services:
       SECRET_KEY_BASE: supersecret
       BINDING: 0.0.0.0
       PORT: 3001
+      PROMETHEUS_EXPORTER_HOST: backend-exporter
+      PROMETHEUS_EXPORTER_PORT: 9394
       DATABASE_HOST: database
       DATABASE_PORT: 5432
       DATABASE_NAME: Project_Organizer_BackEnd_test
@@ -27,6 +29,17 @@ services:
     volumes:
       - $PWD/backend:/app
     working_dir: /app
+  backend-exporter:
+    build:
+      context: backend
+    entrypoint: bundle
+    ports:
+      - 9394:9394
+    command:
+      - exec
+      - prometheus_exporter
+      - -b
+      - 0.0.0.0
   backend-init:
     depends_on:
       - database

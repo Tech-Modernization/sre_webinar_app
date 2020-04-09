@@ -20,7 +20,7 @@ initialize_backend() {
 }
 
 start_monitoring() {
-  docker-compose up -d prometheus prometheus-frontend
+  docker-compose up -d prometheus prometheus-frontend backend-exporter
 }
 
 start_app() {
