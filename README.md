@@ -26,3 +26,8 @@ Prometheus will be on https://localhost:8080.
 Grafana will be on https://localhost:8081.
 
 (These are using self-signed certificates, so expect browser validation errors.)
+
+# Monitoring as Code
+
+Prometheus and Grafana make it easy to store your monitoring configurations in code. Check out
+some examples of this in the `monitoring/{prometheus,grafana}` folders.
