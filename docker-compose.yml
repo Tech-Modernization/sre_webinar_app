@@ -62,6 +62,21 @@ services:
       - $PWD/monitoring/prometheus:/etc/prometheus
     ports:
       - 9090
+  grafana:
+    image: grafana/grafana
+    environment:
+      GF_SECURITY_ADMIN_USER: grafana
+      GF_SECURITY_ADMIN_PASSWORD: grafana
+      GF_SECURITY_ADMIN_SECRET_KEY: supersecretkey
+      GF_SERVER_CERT_FILE: /certs/cert.pem
+      GF_SERVER_CERT_KEY: /certs/cert.key
+      GF_SERVER_ROOT_URL: https://localhost:3000
+    volumes:
+      - $PWD/monitoring/certs:/certs
+      - $PWD/monitoring/grafana/grafana.ini:/etc/grafana/grafana.ini
+      - $PWD/monitoring/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+    ports:
+      - 3000:3000
   prometheus-frontend:
     image: nginx:alpine
     volumes:
