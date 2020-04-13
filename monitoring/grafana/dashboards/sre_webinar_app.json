@@ -1,0 +1,33 @@
+{
+	"uid": "example-sre-webinar-app-dashboard",
+	"title": "SRE Webinar App",
+	"tags": ["flask", "react", "python", "frontend", "backend"],
+	"style": "dark",
+	"timezone": "browser",
+	"editable": false,
+	"graphTooltip": 1,
+	"time": {
+		"from": "now-7d",
+		"to": "now"
+	},
+	"timepicker": {
+		"enable": true,
+		"collapse": false
+	},
+	"annotations": {
+		"list": []
+	},
+	"refresh": "5s",
+	"panels": [{
+		"type": "text",
+		"title": "SRE Webinar App",
+		"gridPos": {
+			"x": 0,
+			"y": 0,
+			"w": 24,
+			"h": 10
+		},
+		"mode": "markdown",
+		"content": "# SRE Webinar App"
+	}]
+}

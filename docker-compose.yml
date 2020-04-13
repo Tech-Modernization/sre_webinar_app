@@ -75,6 +75,8 @@ services:
       - $PWD/monitoring/certs:/certs
       - $PWD/monitoring/grafana/grafana.ini:/etc/grafana/grafana.ini
       - $PWD/monitoring/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+      - $PWD/monitoring/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+      - $PWD/monitoring/grafana/dashboards:/etc/grafana/dashboards
     ports:
       - 3000:3000
   prometheus-frontend:
