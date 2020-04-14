@@ -32,7 +32,13 @@ do
   fi
 done
 
-clone_frontend &&
-  clone_backend &&
-  initialize_backend &&
-  start_app
+if [ -z ${SPLUNK_PASSWORD}]
+then
+  echo "Required environment variable SPLUNK_PASSWORD is not set."
+  exit 1
+else
+  clone_frontend &&
+    clone_backend &&
+    initialize_backend &&
+    start_app
+fi
