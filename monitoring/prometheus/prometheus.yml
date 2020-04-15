@@ -22,3 +22,10 @@ scrape_configs:
     honor_labels: true
     static_configs:
       - targets: ['backend-exporter:9394']
+
+  - job_name: sre_webinar_app_frontend
+    scrape_interval: 5s
+    scrape_timeout: 2s
+    honor_labels: true
+    static_configs:
+      - targets: ['frontend:5000']
