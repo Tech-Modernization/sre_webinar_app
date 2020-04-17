@@ -7,10 +7,14 @@ services:
       context: frontend
     volumes:
       - $PWD/frontend/server.js:/app/server.js
+      - $PWD/frontend/src/App.js:/app/src/App.js
+      - $PWD/frontend/src/setupProxy.js:/app/src/setupProxy.js
     environment:
       BROWSER: none
       NODE_ENV: development
       PORT: 5000
+      REACT_APP_JAEGER_URL: "http://localhost:9411"
+      REACT_APP_USERS_URL: "http://backend:3001"
     entrypoint: sh -c "npm run build && npm start"
     ports:
       - 5000:5000
@@ -88,14 +92,17 @@ services:
     image: jaegertracing/all-in-one:1.6
     environment:
       COLLECTOR_ZIPKIN_HTTP_PORT: 9411
+    command:
+      - --collector.zipkin.http-port=9411
     ports:
       - 5775/udp
       - 6831/udp
       - 6832/udp
-      - 16686
       - 5778
+      - 16686
       - 14268
-      - 9411
+      - 14250
+      - 9411:9411
   jaeger-frontend:
     image: nginx:alpine
     volumes:
