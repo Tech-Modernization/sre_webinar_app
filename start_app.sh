@@ -19,8 +19,9 @@ initialize_backend() {
   docker-compose run --rm backend-init
 }
 
-start_monitoring() {
-  docker-compose up -d prometheus prometheus-frontend backend-exporter grafana
+start_observability_stack() {
+  docker-compose up -d prometheus prometheus-frontend backend-exporter grafana \
+    jaeger jaeger-frontend
 }
 
 start_app() {
@@ -39,5 +40,5 @@ done
 clone_frontend &&
   clone_backend &&
   initialize_backend &&
-  start_monitoring &&
+  start_observability_stack &&
   start_app

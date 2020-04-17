@@ -19,13 +19,15 @@ monitoring tool. I love using Prometheus and Grafana for this for a few reasons:
 
 # Cool! How do I run it?
 
-Start the web app with `start_app.sh`. Prom and Grafana will start up with it.
+Start the web app with `start_app.sh`. Prom, Grafana and Jaeger will start up with it.
 
 The app will be on http://localhost:5000.
 
 Prometheus will be on https://localhost:8080.
 
 Grafana will be on https://localhost:8081.
+
+Jaeger will be on http://localhost:8082.
 
 (These are using self-signed certificates, so expect browser validation errors.)
 
