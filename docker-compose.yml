@@ -5,9 +5,6 @@ services:
     user: root
     build:
       context: frontend
-    volumes:
-      - $PWD/frontend/server.js:/app/server.js
-      - $PWD/frontend/src/App.js:/app/src/App.js
     environment:
       BROWSER: none
       NODE_ENV: development
