@@ -23,6 +23,21 @@ start_logging_stack() {
   docker-compose up -d splunk
 }
 
+wait_for_logging_stack() {
+  >&2 echo "INFO: Waiting for logging stack to start up."
+  elapsed=0
+  timeout_seconds=60
+  while [ "$elapsed" -lt "$timeout_seconds" ]
+  do
+    if docker-compose ps | grep splunk | grep -q "Up (healthy)"
+    then
+      break
+    else
+      elapsed=$((elapsed+1))
+    fi
+  done
+}
+
 start_observability_stack() {
   docker-compose up -d prometheus prometheus-frontend backend-exporter grafana \
     jaeger jaeger-frontend
@@ -48,8 +63,9 @@ then
 else
   clone_frontend &&
     clone_backend &&
-    initialize_backend &&
     start_logging_stack &&
+    wait_for_logging_stack &&
+    initialize_backend &&
     start_observability_stack &&
     start_app
 fi
