@@ -1,0 +1,31 @@
+---
+global:
+  # These are labels exported to other monitoring systems that support
+  # Prometheus, like Grafana!
+  external_labels:
+    project: SRE Webinar App
+scrape_configs:
+  # Prometheus works by scraping text from dedicated HTTP endpoints.
+  # Prometheus itself exposes one at /metrics.
+  - job_name: prometheus
+    scrape_interval: 5s
+    scrape_timeout: 2s
+    honor_labels: true
+    static_configs:
+      - targets: ['prometheus:9090']
+
+  # Apps can expose their own metrics. Many web frameworks and programming
+  # languages have ready-made libraries that do this for you!
+  - job_name: sre_webinar_app_backend
+    scrape_interval: 5s
+    scrape_timeout: 2s
+    honor_labels: true
+    static_configs:
+      - targets: ['backend-exporter:9394']
+
+  - job_name: sre_webinar_app_frontend
+    scrape_interval: 5s
+    scrape_timeout: 2s
+    honor_labels: true
+    static_configs:
+      - targets: ['frontend:5000']

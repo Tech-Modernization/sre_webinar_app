@@ -19,8 +19,17 @@ initialize_backend() {
   docker-compose run --rm backend-init
 }
 
+start_logging_stack() {
+  docker-compose up -d splunk
+}
+
+start_observability_stack() {
+  docker-compose up -d prometheus prometheus-frontend backend-exporter grafana \
+    jaeger jaeger-frontend
+}
+
 start_app() {
-  docker-compose up database frontend backend
+  docker-compose up -d database frontend backend
 }
 
 for app in docker-compose git
@@ -32,7 +41,7 @@ do
   fi
 done
 
-if [ -z ${SPLUNK_PASSWORD}]
+if [ -z ${SPLUNK_PASSWORD} ]
 then
   echo "Required environment variable SPLUNK_PASSWORD is not set."
   exit 1
@@ -40,5 +49,7 @@ else
   clone_frontend &&
     clone_backend &&
     initialize_backend &&
+    start_logging_stack &&
+    start_observability_stack &&
     start_app
 fi

@@ -5,28 +5,48 @@ services:
     build:
       context: frontend
     environment:
-      HOST: 0.0.0.0
+      BROWSER: none
+      NODE_ENV: development
       PORT: 5000
+      REACT_APP_JAEGER_URL: "http://jaeger:9411"
+      REACT_APP_USERS_URL: "http://backend:3001"
+    entrypoint: sh -c "npm run build && npm start"
     ports:
-      - 80:5000
+      - 5000:5000
   backend:
     build:
       context: backend
     environment:
       RAILS_ENV: production
+      RAILS_LOG_TO_STDOUT: "true"
       SECRET_KEY_BASE: supersecret
       BINDING: 0.0.0.0
       PORT: 3001
+      PROMETHEUS_EXPORTER_HOST: backend-exporter
+      PROMETHEUS_EXPORTER_PORT: 9394
       DATABASE_HOST: database
       DATABASE_PORT: 5432
       DATABASE_NAME: Project_Organizer_BackEnd_test
       DATABASE_USERNAME: webapp
       DATABASE_PASSWORD: webapp
+      JAEGER_HOST: jaeger
+      JAEGER_PORT: 6831
     ports:
       - 3001:3001
     volumes:
       - $PWD/backend:/app
     working_dir: /app
+  backend-exporter:
+    build:
+      context: backend
+    entrypoint: bundle
+    ports:
+      - 9394:9394
+    command:
+      - exec
+      - prometheus_exporter
+      - -b
+      - 0.0.0.0
   backend-init:
     depends_on:
       - database
@@ -53,3 +73,55 @@ services:
     environment:
       SPLUNK_START_ARGS: --accept-license
       SPLUNK_PASSWORD: ${SPLUNK_PASSWORD}
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - $PWD/monitoring/prometheus:/etc/prometheus
+    ports:
+      - 9090
+  grafana:
+    image: grafana/grafana
+    environment:
+      GF_SECURITY_ADMIN_USER: grafana
+      GF_SECURITY_ADMIN_PASSWORD: grafana
+      GF_SECURITY_ADMIN_SECRET_KEY: supersecretkey
+      GF_SERVER_CERT_FILE: /certs/cert.pem
+      GF_SERVER_CERT_KEY: /certs/cert.key
+      GF_SERVER_ROOT_URL: https://localhost:3000
+    volumes:
+      - $PWD/monitoring/certs:/certs
+      - $PWD/monitoring/grafana/grafana.ini:/etc/grafana/grafana.ini
+      - $PWD/monitoring/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+      - $PWD/monitoring/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+      - $PWD/monitoring/grafana/dashboards:/etc/grafana/dashboards
+    ports:
+      - 3000:3000
+  jaeger:
+    image: jaegertracing/all-in-one:1.6
+    environment:
+      COLLECTOR_ZIPKIN_HTTP_PORT: 9411
+    command:
+      - --collector.zipkin.http-port=9411
+    ports:
+      - 5775/udp
+      - 6831/udp
+      - 6832/udp
+      - 5778
+      - 16686
+      - 14268
+      - 14250
+      - 9411:9411
+  jaeger-frontend:
+    image: nginx:alpine
+    volumes:
+      - $PWD/monitoring/jaeger/nginx.conf:/etc/nginx/nginx.conf:ro
+      - $PWD/monitoring/certs:/certs
+    ports:
+      - 8082:8082
+  prometheus-frontend:
+    image: nginx:alpine
+    volumes:
+      - $PWD/monitoring/prometheus/nginx.conf:/etc/nginx/nginx.conf:ro
+      - $PWD/monitoring/certs:/certs
+    ports:
+      - 8081:8081
