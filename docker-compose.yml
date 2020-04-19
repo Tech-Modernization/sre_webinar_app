@@ -2,6 +2,7 @@
 version: '2.2'
 services:
   frontend:
+    user: root
     build:
       context: frontend
     environment:
