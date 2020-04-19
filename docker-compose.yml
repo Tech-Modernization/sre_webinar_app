@@ -19,6 +19,7 @@ services:
       context: backend
     environment:
       RAILS_ENV: production
+      RAILS_LOG_TO_STDOUT: "true"
       SECRET_KEY_BASE: supersecret
       BINDING: 0.0.0.0
       PORT: 3001
@@ -29,6 +30,8 @@ services:
       DATABASE_NAME: Project_Organizer_BackEnd_test
       DATABASE_USERNAME: webapp
       DATABASE_PASSWORD: webapp
+      JAEGER_HOST: jaeger
+      JAEGER_PORT: 6831
     ports:
       - 3001:3001
     volumes:
