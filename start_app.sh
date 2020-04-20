@@ -9,6 +9,7 @@ usage() {
 $(basename $0)
 Starts the webapp used during the "Boost Your Apps" SRE Webinar.
 
+
 Arguments:
   --help, -h           Displays this help message.
   --version, -v        Displays the version.
@@ -56,11 +57,20 @@ clone_backend() {
 }
 
 initialize_backend() {
+  if test "$NOBUILD" == "false"
+  then
+    docker-compose build backend-init
+  fi
   docker-compose run --rm backend-init
 }
 
 start_app() {
-  docker-compose up database frontend backend
+  if test "$NOBUILD" == "false"
+  then
+    docker-compose up --build database frontend backend
+  else
+    docker-compose up database frontend backend
+  fi
 }
 
 if [ "$1" == '--help' ] || [ "$1" == '-h' ]
