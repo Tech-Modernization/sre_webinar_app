@@ -64,6 +64,19 @@ services:
       POSTGRES_USER: webapp
       POSTGRES_PASSWORD: webapp
       POSTGRES_DB: Project_Organizer_BackEnd_test
+  splunk:
+    image: splunk/splunk
+    volumes:
+      - $PWD/monitoring/splunk/config:/opt/splunk/etc/system/local
+    ports:
+      - 4000:4000
+      - 8000:8000
+      - 9997
+      - 8089
+      - 8088
+    environment:
+      SPLUNK_START_ARGS: --accept-license
+      SPLUNK_PASSWORD: ${SPLUNK_PASSWORD}
   prometheus:
     image: prom/prometheus
     volumes:
