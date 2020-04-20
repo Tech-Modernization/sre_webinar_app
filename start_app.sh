@@ -13,7 +13,11 @@ clone_frontend() {
 }
 
 clone_backend() {
-  test -d ./backend || clone https://github.com/Razz/Project_Organizer_BackEnd ./backend "$BRANCH"
+  test -d ./backend || clone https://github.com/Razz/Project_Organizer_BackEnd ./backend
+  if test "$BRANCH" != "master"
+  then
+    GIT_DIR=./backend/.git git checkout "$BRANCH"
+  fi
 }
 
 initialize_backend() {
