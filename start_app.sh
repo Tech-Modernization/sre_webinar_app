@@ -64,7 +64,9 @@ initialize_backend() {
   docker-compose run --rm backend-init
 }
 
+
 start_app() {
+  docker-compose up -d database frontend backend
   if test "$NOBUILD" == "false"
   then
     docker-compose up --build database frontend backend
