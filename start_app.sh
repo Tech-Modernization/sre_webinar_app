@@ -32,7 +32,7 @@ do
   fi
 done
 
-if [ -z ${SPLUNK_PASSWORD}]
+if [ -z ${SPLUNK_PASSWORD} ]
 then
   echo "Required environment variable SPLUNK_PASSWORD is not set."
   exit 1

@@ -45,7 +45,10 @@ services:
       POSTGRES_DB: Project_Organizer_BackEnd_test
   splunk:
     image: splunk/splunk
+    volumes:
+      - $PWD/monitoring/splunk/config:/opt/splunk/etc/system/local
     ports:
+      - 4000:4000
       - 8000:8000
       - 9997
       - 8089
