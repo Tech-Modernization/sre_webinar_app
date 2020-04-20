@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -e
+BRANCH="${BRANCH:-master}"
 
 clone() {
   url="$1"
@@ -12,7 +13,7 @@ clone_frontend() {
 }
 
 clone_backend() {
-  test -d ./backend || clone https://github.com/Razz/Project_Organizer_BackEnd ./backend
+  test -d ./backend || clone https://github.com/Razz/Project_Organizer_BackEnd ./backend "$BRANCH"
 }
 
 initialize_backend() {
@@ -32,6 +33,11 @@ do
   fi
 done
 
+if test "$BRANCH" != "master"
+then
+  >&2 echo "INFO: Checking out branch: $BRANCH"
+  git checkout "$BRANCH" || exit 1
+fi
 if [ -z ${SPLUNK_PASSWORD} ]
 then
   echo "Required environment variable SPLUNK_PASSWORD is not set."
@@ -42,3 +48,8 @@ else
     initialize_backend &&
     start_app
 fi
+
+clone_frontend &&
+  clone_backend &&
+  initialize_backend &&
+  start_app
