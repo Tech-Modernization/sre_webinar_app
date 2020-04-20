@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -e
 BRANCH="${BRANCH:-master}"
+NESTED="${NESTED:-false}"
 
 clone() {
   url="$1"
@@ -14,7 +15,7 @@ clone_frontend() {
 
 clone_backend() {
   test -d ./backend || clone https://github.com/Razz/Project_Organizer_BackEnd ./backend
-  if test "$BRANCH" != "master"
+  if test "$BRANCH" != "master" && test "$NESTED" == "false"
   then
     GIT_DIR=./backend/.git git checkout "$BRANCH"
   fi
@@ -37,10 +38,10 @@ do
   fi
 done
 
-if test "$BRANCH" != "master"
+if test "$BRANCH" != "master" && test "$NESTED" == "false"
 then
   >&2 echo "INFO: Checking out branch: $BRANCH"
-  git checkout "$BRANCH" || exit 1
+  git checkout "$BRANCH" && exec env NESTED=true "$(basename $0)" || exit 1
 fi
 
 clone_frontend &&
