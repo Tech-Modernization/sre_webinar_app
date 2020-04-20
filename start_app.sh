@@ -72,9 +72,9 @@ start_observability_stack() {
 start_app() {
   if test "$NOBUILD" == "false"
   then
-    docker-compose up --build database frontend backend
+    docker-compose up --build -d database frontend backend
   else
-    docker-compose up database frontend backend
+    docker-compose up database -d frontend backend
   fi
 }
 
