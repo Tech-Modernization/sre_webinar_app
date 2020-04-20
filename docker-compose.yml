@@ -3,11 +3,6 @@ version: '2.2'
 services:
   frontend:
     user: root
-    volumes:
-      - $PWD/frontend/src/Components:/app/src/Components
-      - $PWD/frontend/src/Middleware/Logging.js:/app/src/Middleware/Logging.js
-      - $PWD/frontend/src/App.js:/app/src/App.js
-      - $PWD/frontend/server.js:/app/server.js
     build:
       context: frontend
     environment:
@@ -45,9 +40,6 @@ services:
       JAEGER_PORT: 6831
     ports:
       - 3001:3001
-    volumes:
-      - $PWD/backend:/app
-    working_dir: /app
   backend-exporter:
     build:
       context: backend
