@@ -1,2 +1,4 @@
 backend/
 frontend/
+monitoring/splunk/config
+!monitoring/splunk/config/inputs.conf
