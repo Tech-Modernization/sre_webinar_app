@@ -89,7 +89,6 @@ start_observability_stack() {
 }
 
 start_app() {
-  docker-compose up -d database frontend backend
   if test "$NOBUILD" == "false"
   then
     docker-compose up -d --build database frontend backend
