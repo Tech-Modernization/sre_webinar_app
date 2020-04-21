@@ -67,14 +67,33 @@ initialize_backend() {
   docker-compose run --rm backend-init
 }
 
+start_logging_stack() {
+  docker-compose up -d splunk
+}
+
+wait_for_logging_stack() {
+  >&2 echo "INFO: Waiting for logging stack to start up."
+  elapsed=0
+  timeout_seconds=60
+  while [ "$elapsed" -lt "$timeout_seconds" ]
+  do
+    if docker-compose ps | grep splunk | grep -q "Up (healthy)"
+    then
+      break
+    else
+      elapsed=$((elapsed+1))
+    fi
+  done
+}
+
 
 start_app() {
   docker-compose up -d database frontend backend
   if test "$NOBUILD" == "false"
   then
-    docker-compose up --build database frontend backend
+    docker-compose up -d --build database frontend backend
   else
-    docker-compose up database frontend backend
+    docker-compose up -d database frontend backend
   fi
 }
 
@@ -111,11 +130,8 @@ then
 else
   clone_frontend &&
     clone_backend &&
+    start_logging_stack &&
+    wait_for_logging_stack &&
     initialize_backend &&
     start_app
 fi
-
-clone_frontend &&
-  clone_backend &&
-  initialize_backend &&
-  start_app
