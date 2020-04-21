@@ -5,7 +5,8 @@ NESTED="${NESTED:-false}"
 NOBUILD="${NOBUILD:-false}"
 
 usage() {
-  cat <<-USAGE $(basename $0)
+  cat <<-USAGE
+$(basename $0)
 Starts the webapp used during the "Boost Your Apps" SRE Webinar.
 
 
