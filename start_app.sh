@@ -46,19 +46,20 @@ clone() {
 
 clone_frontend() {
   test -d ./frontend || clone https://github.com/Razz/Project_Organizer_FrontEnd ./frontend
-  if test "$BRANCH" != "master" && test "$NESTED" == "false"
+  if test "$BRANCH" != "master"
   then
-    GIT_DIR=./frontend/.git git checkout "$BRANCH"
+    pushd frontend; git switch -f "$BRANCH"; popd
   fi
 }
 
 clone_backend() {
   test -d ./backend || clone https://github.com/Razz/Project_Organizer_BackEnd ./backend
-  if test "$BRANCH" != "master" && test "$NESTED" == "false"
+  if test "$BRANCH" != "master"
   then
-    GIT_DIR=./backend/.git git checkout "$BRANCH"
+    pushd backend; git switch -f "$BRANCH"; popd
   fi
 }
+
 
 initialize_backend() {
   if test "$NOBUILD" == "false"
