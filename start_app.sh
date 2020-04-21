@@ -47,7 +47,7 @@ clone_frontend() {
   test -d ./frontend || clone https://github.com/Razz/Project_Organizer_FrontEnd ./frontend
   if test "$BRANCH" != "master"
   then
-    GIT_DIR=./backend/.git git checkout "$BRANCH"
+    GIT_DIR=./frontend/.git git switch -f "$BRANCH"
   fi
 }
 
@@ -55,7 +55,7 @@ clone_backend() {
   test -d ./backend || clone https://github.com/Razz/Project_Organizer_BackEnd ./backend
   if test "$BRANCH" != "master"
   then
-    GIT_DIR=./backend/.git git checkout "$BRANCH"
+    GIT_DIR=./backend/.git git switch -f "$BRANCH"
   fi
 }
 
