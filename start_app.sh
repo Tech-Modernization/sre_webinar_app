@@ -5,8 +5,7 @@ NESTED="${NESTED:-false}"
 NOBUILD="${NOBUILD:-false}"
 
 usage() {
-  cat <<-USAGE
-$(basename $0)
+  cat <<-USAGE $(basename $0)
 Starts the webapp used during the "Boost Your Apps" SRE Webinar.
 
 
@@ -16,7 +15,6 @@ Arguments:
 
 Environment variables:
   BRANCH=[$BRANCH]     Sets the branch (chapter) to use for this repo and the app's backend.
-                       (Everything on the frontend is on 'master'.)
 
   NOBUILD=[$NOBUILD]   This script will rebuild Docker images used for this app by default.
                        Set NOBUILD to 'true' to disable this.
@@ -46,6 +44,10 @@ clone() {
 
 clone_frontend() {
   test -d ./frontend || clone https://github.com/Razz/Project_Organizer_FrontEnd ./frontend
+  if test "$BRANCH" != "master"
+  then
+    GIT_DIR=./backend/.git git checkout "$BRANCH"
+  fi
 }
 
 clone_backend() {
