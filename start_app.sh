@@ -73,10 +73,6 @@ start_app() {
   fi
 }
 
-vendor_frontend_node_modules_for_speed() {
-  docker-compose run --rm vendor-frontend
-}
-
 if [ "$1" == '--help' ] || [ "$1" == '-h' ]
 then
   usage
@@ -97,14 +93,6 @@ do
     exit 1
   fi
 done
-
-if test "$BRANCH" == "master" && ! test -d ./frontend/node_modules
-then
-  >&2 echo "INFO: Welcome to the SRE webinar app"'!'" We're doing some \
-optimizations to make 'flipping' through chapters faster."
-  vendor_frontend_node_modules_for_speed
-  >&2 echo "INFO: Optimizations complete."
-fi
 
 if test "$BRANCH" != "master" && test "$NESTED" == "false"
 then
