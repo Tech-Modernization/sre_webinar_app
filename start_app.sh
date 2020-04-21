@@ -46,6 +46,10 @@ clone() {
 
 clone_frontend() {
   test -d ./frontend || clone https://github.com/Razz/Project_Organizer_FrontEnd ./frontend
+  if test "$BRANCH" != "master" && test "$NESTED" == "false"
+  then
+    GIT_DIR=./frontend/.git git checkout "$BRANCH"
+  fi
 }
 
 clone_backend() {
