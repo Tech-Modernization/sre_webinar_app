@@ -1,6 +1,15 @@
 ---
 version: '2.2'
 services:
+  vendor-frontend:
+    build:
+      context: frontend
+    volumes:
+      - $PWD/frontend/node_modules:/node_modules
+    entrypoint: sh
+    command:
+      - -c
+      - cp -r ./node_modules/* /node_modules
   frontend:
     build:
       context: frontend
