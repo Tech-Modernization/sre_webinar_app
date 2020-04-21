@@ -16,7 +16,6 @@ Arguments:
 
 Environment variables:
   BRANCH=[$BRANCH]     Sets the branch (chapter) to use for this repo and the app's backend.
-                       (Everything on the frontend is on 'master'.)
 
   NOBUILD=[$NOBUILD]   This script will rebuild Docker images used for this app by default.
                        Set NOBUILD to 'true' to disable this.
@@ -46,11 +45,15 @@ clone() {
 
 clone_frontend() {
   test -d ./frontend || clone https://github.com/Razz/Project_Organizer_FrontEnd ./frontend
+  if test "$BRANCH" != "master"
+  then
+    GIT_DIR=./backend/.git git checkout "$BRANCH"
+  fi
 }
 
 clone_backend() {
   test -d ./backend || clone https://github.com/Razz/Project_Organizer_BackEnd ./backend
-  if test "$BRANCH" != "master" && test "$NESTED" == "false"
+  if test "$BRANCH" != "master"
   then
     GIT_DIR=./backend/.git git checkout "$BRANCH"
   fi
